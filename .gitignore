@@ -1,0 +1,9 @@
+.angular
+.DS_Store
+node_modules
+images
+build/
+
+# vim
+*.swo
+*.swp
