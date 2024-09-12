@@ -1,0 +1,1527 @@
+I have this code:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گردآوری اطلاعات از خبرگان</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .sample_farsi_digits {
+               font-feature-settings: "ss01";
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            font-feature-settings: "ss01";
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .login-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-box input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        .login-box button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            background-color: blue;
+            color: white;
+            cursor: pointer;
+        }
+
+        .page {
+            display: none; /* Pages are hidden by default */
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .section-image {
+            width: 100%;
+            max-width: 400px;
+            max-height: 100px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .section-description {
+            margin: 20px 0;
+            text-align: justify            
+        }
+        .section-description-bold {
+            margin: 20px 0;
+            text-align: justify;            
+            font-weight: bold;
+        }
+        .question-container {
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-size: 1em;
+            margin-bottom: 30px;
+            font-weight: normal;
+            text-align: justify; 
+        }
+
+        .linear-scale-container {
+            position: relative; /* Make this container relative for absolute positioning of green line */
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+
+        .linear-scale {
+            flex: 1;
+            margin-right: 10px;
+            position: relative;
+            min-width: 100px;
+        }
+
+        .range-values {
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .range-input {
+            width: 100%;
+            background: transparent;
+            -webkit-appearance: none;
+            appearance: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .range-input::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: blue;
+        }
+        #page1Scale1-2::-webkit-slider-runnable-track {
+            background-color: green;
+        }  
+        #page2Scale1-2::-webkit-slider-runnable-track {
+            background-color: green;
+        }         
+        #page3Scale1-2::-webkit-slider-runnable-track {
+            background-color: green;
+        }         
+        #page4Scale1-2::-webkit-slider-runnable-track {
+            background-color: green;
+        }             
+        #page5Scale1-2::-webkit-slider-runnable-track {
+            background-color: green;
+        }             
+        #scale3::-webkit-slider-runnable-track {
+            background-color: green;
+        } 
+        #page1Scale1-4::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page1Scale1-5::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page1Scale1-6::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page2Scale1-4::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page2Scale1-5::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page2Scale1-6::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page3Scale1-4::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page3Scale1-5::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page3Scale1-6::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page4Scale1-4::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page4Scale1-5::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page4Scale1-6::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page5Scale1-4::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page5Scale1-5::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #page5Scale1-6::-webkit-slider-runnable-track {
+            background-color: green;
+        }       
+        #scale13::-webkit-slider-runnable-track {
+            background-color: green;
+        } 
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: red;
+            cursor: pointer;
+            border-radius: 50%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .green-line {
+            position: absolute;
+            height: 8px;
+            background-color: green;
+            z-index: 1;
+        }
+        .range-value-display {
+            position: absolute;
+            top: -30px; /* Adjust to position the text above the handle */
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-weight: bold;
+            background-color: blue;
+            border-radius: 50%;
+            padding: 2px 6px;
+            white-space: nowrap;
+            font-size: 0.9em;
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+        }
+        /* .checkbox-container {
+            display: flex;
+            align-items: center;
+        } */
+        .radio-container {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px; /* Space between each row */
+        }
+
+        .radio-item label {
+            margin-left: 8px; /* Adjust spacing between checkbox and label */
+            cursor: pointer; /* Change cursor to pointer when hovering over the label */
+        }
+        .next-section-link {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .next-section-link a {
+            text-decoration: none;
+            color: white;
+            background-color: blue;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .message {
+            margin-top: 10px;
+            color: green;
+            font-weight: bold;
+            display: none;
+            width: 100%;
+        }
+
+        @media (max-width: 700px) {
+            .menu-icon {
+                display: block;
+            }      
+            nav {
+                display: none;
+                flex-direction: column;
+                background-color: #333;
+                position: absolute;
+                top: 50px;
+                right: 10px;
+                width: 200px;
+                border-radius: 8px;
+                padding: 10px;
+            }
+
+            nav a {
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
+
+            nav.active {
+                display: flex;
+            }
+            .menu-icon2 {
+                display: none;
+            }
+            /* Footer navigation (nav2) */
+            nav.nav2 {
+                display: flex !important;
+                flex-direction: row; /* Change to row to align items horizontally */
+                background-color: #333;
+                position: relative; /* Remove fixed position */
+                width: 100%; /* Full width */
+                height: auto; /* Let height adjust based on content */
+                padding: 10px 0; /* Reduce padding for better appearance */
+                justify-content: center; /* Center the content */
+                align-items: center; /* Vertically align items */
+                z-index: 100;
+                border-radius: 8px; /* Optional: Rounded corners */
+            }
+
+            /* Style for the navigation link */
+            nav.nav2 a {
+                text-align: left;
+                color: white;
+                background-color:#333;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 1em;
+                display: inline-block;
+                margin: 0 10px; /* Add margin between items */
+            }            
+            .section-title {
+                font-size: 1.2em;
+                text-align: justify;
+            }
+
+            .section-image {
+                width: 100%;
+                max-width: 800px;
+            }
+
+            .question-title {
+                font-size: 1em;
+            }
+
+            .linear-scale {
+                min-width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header style="direction: rtl;" id="header" >
+        <span class="menu-icon" onclick="toggleMenu()">☰</span>
+        <nav id="navbar" class="section-title">
+            <a href="#page1">فروش نفت</a>
+            <a href="#page2">رشد نقدینگی</a>
+            <a href="#page3">نرخ ارز</a>
+            <a href="#page4">نرخ بازده در بازار بدهی</a>
+            <a href="#page5">شاخص نا اطمینانی</a>            
+            <a href="#pageEnd">ارسال اطلاعات ثبت شده</a>
+        </nav>
+    </header>
+
+    <!-- Page 1 -->
+    <div class="page" id="page1">
+        <div class="section" id="section12">
+            <h2 class="section-title">فروش نفت</h2>
+            <img src="" 
+            alt="Embedded Image" class="section-image">
+            <p class="section-description sample_farsi_digits"><span class="section-description-bold">فروش نفت ایران در فصل بهار ۱۴۰۳ با شیب کم روند افزایشی خود را ادامه داد و به ۱.۴۴ میلیون بشکه در روز رسید.</span> هر چند فروش نفت ایران در بهار نتوانست رکورد ماه اسفند سال پیش با ۱/۹۲ میلیون بشکه در روز را بشکند اما با این حال برای مجموع فصل بهار متوسط فروش نفت با ۱/۵۸ میلیون بشکه در روز افزایش اندکی نسبت رقم متوسط ۱/۵۵ میلیون بشکه در روز که در فصل زمستان متحقق شد نشان می دهد.</p>
+            <p class="section-description"><span class="section-description-bold">هر چند بعید است آمریکا با توجه به انتخابات پیش روی درصد اعمال محدودیت بیشتر بر فروش نفت ایران باشد اما شرایط بین المللی همچنان ملتهب است. </span>از آنجا که انتخابات آمریکا در پیش است و آمریکا علاقه‌مند نیست که در سال انتخابات قیمت‌ها به‌خصوص قیمت بنزین که متغیری تأثیرگذار برای رأی‌آوردن است، بالاتر از ۴ دلار در هر گالن باشد، برای مهارکردن قیمت ها، بعید است تحریم‌ها را بیشتر ‌کند. با این حال شرایط ملتهب خاورمیانه و عدم موفقیت تلاش های انجام شده برای کاهش تنش می تواند سبب افزایش تخاصمات و شرایط پیش بینی نشده شود. </p>
+            <p class="section-description"><span class="section-description-bold">لطفا به سوالات زیر برای چشم انداز فروش نفت در پاییز ۱۴۰۳ با جاگذاری دایره ها در محل مورد نظر بر روی خط پاسخ بفرمایید </p>
+            <!-- Question 1 -->
+            <div class="question-container">
+                <h3 class="question-title">۱/۱. حداقل رنج و دامنه مقادیری که به احتمال بیش از ۵۰ درصد مقدار فروش نفت در پاییز ۱۴۰۳ در حدود آن دامنه خواهد بود را از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container">
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-1">0.72</span>
+                            <span id="page1MaxValue1-1">2.68</span>
+                        </div>
+                        <div class="green-line" id="page1GreenLine1-1" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page1MinRange1-1" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page1MinRange1-1', 'page1MaxRange1-1', 'page1MinValue1-1', 'page1MaxValue1-1', 'page1GreenLine1-1', 'page1MinValue1-2', 'page1MaxValue1-2','page1SelectedValue1-2')">
+                        <input  type="range" class="range-input" id="page1MaxRange1-1" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page1MinRange1-1', 'page1MaxRange1-1', 'page1MinValue1-1', 'page1MaxValue1-1', 'page1GreenLine1-1', 'page1MinValue1-2', 'page1MaxValue1-2','page1SelectedValue1-2')">
+                    </div>
+                </div>
+                <h3 class="question-title">۱/۲. در رنج و دامنه مقادیر مشخص شده در سوال فوق، برای فروش در پاییز ۱۴۰۳ لطفا مقدار فروش نفتی که بیشترین احتمال وقوع را دارد از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-2">0.72</span>
+                            <span id="page1MaxValue1-2">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page1Scale1-2" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page1Scale1-2', 'page1SelectedValue1-2')">
+                            <span id="page1SelectedValue1-2" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۳.	برای پاییز ۱۴۰۳ رنج و دامنه ای از مقادیر را مشخص بفرمایید که به احتمال ۹۰ درصد بعید باشد که فروش نفت از آن فراتر رود</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-3">0.72</span>
+                            <span id="page1MaxValue1-3">2.68</span>
+                        </div>
+                        <div class="green-line" id="page1GreenLine1-3" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page1MinRange1-3" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page1MinRange1-3', 'page1MaxRange1-3', 'page1MinValue1-3', 'page1MaxValue1-3', 'page1GreenLine1-3','page1MinValue1-3', 'page1MaxValue1-3','')">
+                        <input  type="range" class="range-input" id="page1MaxRange1-3" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page1MinRange1-3', 'page1MaxRange1-3', 'page1MinValue1-3', 'page1MaxValue1-3', 'page1GreenLine1-3','page1MinValue1-3', 'page1MaxValue1-3','')">
+                    </div>
+                </div>                
+                <!-- فصل پایانی دوره یکساله پیش رو  -->
+                <p class="section-description-bold" >علاوه بر پاییز ۱۴۰۳، پیش بینی خود را برای محتمل ترین مقدار فروش نفت در چهار فصل پیش رو به ترتیب برای سایر فصول مشخص فرمایید: </p>
+                <h3 class="question-title">۱/۴.	محتمل ترین مقدار فروش نفت برای زمستان ۱۴۰۳:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-4">0.72</span>
+                            <span id="page1MaxValue1-4">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page1Scale1-4" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page1Scale1-4', 'page1SelectedValue1-4')">
+                            <span id="page1SelectedValue1-4" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۵.	محتمل ترین مقدار فروش نفت برای بهار ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-5">0.72</span>
+                            <span id="page1MaxValue1-5">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page1Scale1-5" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page1Scale1-5', 'page1SelectedValue1-5')">
+                            <span id="page1SelectedValue1-5" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۶.	محتمل ترین مقدار فروش نفت برای تابستان ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-6">0.72</span>
+                            <span id="page1MaxValue1-6">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page1Scale1-6" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page1Scale1-6', 'page1SelectedValue1-6')">
+                            <span id="page1SelectedValue1-6" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <p class="section-description-bold" >یش بینی خود را از حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار فروش نفت در فصول پیش رو، در حدود آن دامنه خواهد بود ارایه فرمایید:</p>
+                <h3 class="question-title">۱/۷.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار فروش نفت در زمستان ۱۴۰۳ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-7">0.72</span>
+                            <span id="page1MaxValue1-7">2.68</span>
+                        </div>
+                        <div class="green-line" id="page1GreenLine1-7" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page1MinRange1-7" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page1MinRange1-7','page1MaxRange1-7', 'page1MinValue1-7', 'page1MaxValue1-7', 'page1GreenLine1-7','page1MinValue1-7', 'page1MaxValue1-7','')">
+                        <input  type="range" class="range-input" id="page1MaxRange1-7" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page1MinRange1-7', 'page1MaxRange1-7', 'page1MinValue1-7', 'page1MaxValue1-7', 'page1GreenLine1-7','page1MinValue1-7', 'page1MaxValue1-7','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۸.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار فروش نفت در بهار ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-8">0.72</span>
+                            <span id="page1MaxValue1-8">2.68</span>
+                        </div>
+                        <div class="green-line" id="page1GreenLine1-8" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page1MinRange1-8" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page1MinRange1-8', 'page1MaxRange1-8', 'page1MinValue1-8', 'page1MaxValue1-8', 'page1GreenLine1-8','page1MinValue1-8', 'page1MaxValue1-8','')">
+                        <input  type="range" class="range-input" id="page1MaxRange1-8" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page1MinRange1-8', 'page1MaxRange1-8', 'page1MinValue1-8', 'page1MaxValue1-8', 'page1GreenLine1-8','page1MinValue1-8', 'page1MaxValue1-8','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۹.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار فروش نفت در تابستان ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page1MinValue1-9">0.72</span>
+                            <span id="page1MaxValue1-9">2.68</span>
+                        </div>
+                        <div class="green-line" id="page1GreenLine1-9" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page1MinRange1-9" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page1MinRange1-9', 'page1MaxRange1-9', 'page1MinValue1-9', 'page1MaxValue1-9', 'page1GreenLine1-9','page1MinValue1-9', 'page1MaxValue1-9','')">
+                        <input  type="range" class="range-input" id="page1MaxRange1-9" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page1MinRange1-9', 'page1MaxRange1-9', 'page1MinValue1-9', 'page1MaxValue1-9', 'page1GreenLine1-9','page1MinValue1-9', 'page1MaxValue1-9','')">
+                    </div>
+                </div>                
+
+            </div>
+            <nav id="navbar" class="nav2" onclick="toggleMenu()">
+                <a href="#page2" >انتقال به رشد نقدینگی</a>
+            </nav>
+        </div>
+    </div>
+    <!-- Page 2 -->
+    <div class="page" id="page2">
+        <div class="section" id="section21">
+            <h2 class="section-title">رشد نقدینگی</h2>
+            <img src="" 
+            alt="Embedded Image" class="section-image">
+            <p class="section-description"><span class="section-description-bold">روند نزولی متوسط نرخ رشد نقدینگی در بهار ۱۴۰۳ نیز ادامه یافت.</span> بر اساس آخرین اعلام بانک مرکزی، متوسط ۱۲ماهه نرخ رشد نقدینگی در ادامه روند نزولی خود به ۲۶/۲ درصد (رشد نقطه‌به‌نقطه معادل 28.6 درصد است) در خرداد‌ماه 140۳ رسیده‌است. متوسط ۱۲ماهه نرخ رشد پول نیز در ادامه روند نزولی خود به ۲۷/۲درصد (رشد نقطه‌به‌نقطه معادل 21.2 درصد است) در خرداد‌ماه 140۳ رسیده‌است. بنابراین با توجه به سیر نزولی رشد متوسط متغیرهای پولی، اثر عوامل پولی بر نرخ تورم متوسط در ماه های اخیر کاهنده بوده است.</p>
+            <p class="section-description"><span class="section-description-bold">هرچند بانک مرکزی بر استمرار سیاست انقباضی خود تاکید دارد امااحتمال توقف روند نزولی رشد نقدینگی و بازگشت رشد نقدینگی به مسیر صعودی و کاهش احتمالی در نرخ های سود وجود دارد. </span>چنانکه نرخ رشد نقدینگی در خرداد ماه 140۳ با افزایش قابل توجه به ۲۶.۸ درصد و نرخ سود اسناد خزانه دولت نیز با کاهش قابل توجه به محدوده ۳۱ درصد در خردادماه رسیده است. بنابراین در مجموع از ناحیه تحولات آتی سیاست پولی، احتمال ایجاد فشارهای افزاینده بر نرخ تورم در سایه توقف کاهش رشد نقدینگی، افزایش نرخ رشد پول و توقف افزایش نرخ های سود بیشتر وجود دارد. </p>
+            <p class="section-description-bold">لطفا به سوالات زیر برای چشم انداز رشد نقدینگی در پاییز ۱۴۰۳ با جاگذاری دایره ها در محل مورد نظر بر روی خط پاسخ بفرمایید:</p>
+            <!-- Question 1 -->
+            <div class="question-container">
+                <h3 class="question-title">۱/۱.	حداقل رنج و دامنه مقادیری که به احتمال بیش از ۵۰ درصد رشد نقدینگی در پاییز ۱۴۰۳ در حدود آن دامنه خواهد بود را از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container">
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-1">13.32</span>
+                            <span id="page2MaxValue1-1">55.16</span>
+                        </div>
+                        <div class="green-line" id="page2GreenLine1-1" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page2MinRange1-1" min="13.32" max="55.16" step="0.01" value="25" oninput="updateRangeValues('page2MinRange1-1', 'page2MaxRange1-1', 'page2MinValue1-1', 'page2MaxValue1-1', 'page2GreenLine1-1', 'page2MinValue1-2', 'page2MaxValue1-2','page2SelectedValue1-2')">
+                        <input  type="range" class="range-input" id="page2MaxRange1-1" min="13.32" max="55.16" step="0.01" value="40" oninput="updateRangeValues('page2MinRange1-1', 'page2MaxRange1-1', 'page2MinValue1-1', 'page2MaxValue1-1', 'page2GreenLine1-1', 'page2MinValue1-2', 'page2MaxValue1-2','page2SelectedValue1-2')">
+                    </div>
+                </div>
+                <h3 class="question-title">۱/۲. در رنج و دامنه مقادیر مشخص شده در سوال فوق، برای فروش در پاییز ۱۴۰۳ لطفا رشد نقدینگی که بیشترین احتمال وقوع را دارد از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-2">13.32</span>
+                            <span id="page2MaxValue1-2">55.16</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page2Scale1-2" min="13.32" max="55.16" step="0.01" value="34.18" oninput="updateSecondScaleValue('page2Scale1-2', 'page2SelectedValue1-2')">
+                            <span id="page2SelectedValue1-2" class="range-value-display">34.18</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۳. برای پاییز ۱۴۰۳ رنج و دامنه ای از مقادیر را مشخص بفرمایید که به احتمال ۹۰ درصد بعید باشد که رشد نقدینگی از آن فراتر رود</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-3">13.32</span>
+                            <span id="page2MaxValue1-3">55.16</span>
+                        </div>
+                        <div class="green-line" id="page2GreenLine1-3" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page2MinRange1-3" min="13.32" max="55.16" step="0.01" value="25" oninput="updateRangeValues('page2MinRange1-3', 'page2MaxRange1-3', 'page2MinValue1-3', 'page2MaxValue1-3', 'page2GreenLine1-3','page2MinValue1-3', 'page2MaxValue1-3','')">
+                        <input  type="range" class="range-input" id="page2MaxRange1-3" min="13.32" max="55.16" step="0.01" value="40" oninput="updateRangeValues('page2MinRange1-3', 'page2MaxRange1-3', 'page2MinValue1-3', 'page2MaxValue1-3', 'page2GreenLine1-3','page2MinValue1-3', 'page2MaxValue1-3','')">
+                    </div>
+                </div>                
+                <!-- فصل پایانی دوره یکساله پیش رو  -->
+                <p class="section-description-bold" >علاوه بر پاییز ۱۴۰۳، پیش بینی خود را برای محتمل ترین مقدار رشد نقدینگی در چهار فصل پیش رو به ترتیب برای سایر فصول مشخص فرمایید: </p>
+                <h3 class="question-title">۱/۴.	محتمل ترین مقدار رشد نقدینگی برای زمستان ۱۴۰۳:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-4">0.72</span>
+                            <span id="page2MaxValue1-4">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page2Scale1-4" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page2Scale1-4', 'page2SelectedValue1-4')">
+                            <span id="page2SelectedValue1-4" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۵.	محتمل ترین مقدار رشد نقدینگی برای بهار ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-5">0.72</span>
+                            <span id="page2MaxValue1-5">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page2Scale1-5" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page2Scale1-5', 'page2SelectedValue1-5')">
+                            <span id="page2SelectedValue1-5" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۶.	محتمل ترین مقدار رشد نقدینگی برای تابستان ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-6">0.72</span>
+                            <span id="page2MaxValue1-6">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page2Scale1-6" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page2Scale1-6', 'page2SelectedValue1-6')">
+                            <span id="page2SelectedValue1-6" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <p class="section-description-bold" >یش بینی خود را از حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در فصول پیش رو، در حدود آن دامنه خواهد بود ارایه فرمایید:</p>
+                <h3 class="question-title">۱/۷.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در زمستان ۱۴۰۳ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-7">0.72</span>
+                            <span id="page2MaxValue1-7">2.68</span>
+                        </div>
+                        <div class="green-line" id="page2GreenLine1-7" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page2MinRange1-7" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page2MinRange1-7','page2MaxRange1-7', 'page2MinValue1-7', 'page2MaxValue1-7', 'page2GreenLine1-7','page2MinValue1-7', 'page2MaxValue1-7','')">
+                        <input  type="range" class="range-input" id="page2MaxRange1-7" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page2MinRange1-7', 'page2MaxRange1-7', 'page2MinValue1-7', 'page2MaxValue1-7', 'page2GreenLine1-7','page2MinValue1-7', 'page2MaxValue1-7','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۸.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در بهار ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-8">0.72</span>
+                            <span id="page2MaxValue1-8">2.68</span>
+                        </div>
+                        <div class="green-line" id="page2GreenLine1-8" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page2MinRange1-8" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page2MinRange1-8', 'page2MaxRange1-8', 'page2MinValue1-8', 'page2MaxValue1-8', 'page2GreenLine1-8','page2MinValue1-8', 'page2MaxValue1-8','')">
+                        <input  type="range" class="range-input" id="page2MaxRange1-8" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page2MinRange1-8', 'page2MaxRange1-8', 'page2MinValue1-8', 'page2MaxValue1-8', 'page2GreenLine1-8','page2MinValue1-8', 'page2MaxValue1-8','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۹.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در تابستان ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page2MinValue1-9">0.72</span>
+                            <span id="page2MaxValue1-9">2.68</span>
+                        </div>
+                        <div class="green-line" id="page2GreenLine1-9" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page2MinRange1-9" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page2MinRange1-9', 'page2MaxRange1-9', 'page2MinValue1-9', 'page2MaxValue1-9', 'page2GreenLine1-9','page2MinValue1-9', 'page2MaxValue1-9','')">
+                        <input  type="range" class="range-input" id="page2MaxRange1-9" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page2MinRange1-9', 'page2MaxRange1-9', 'page2MinValue1-9', 'page2MaxValue1-9', 'page2GreenLine1-9','page2MinValue1-9', 'page2MaxValue1-9','')">
+                    </div>
+                </div>                
+
+                <!-- <div id="message1" class="message">Ranges saved successfully!</div> -->
+            </div>
+            <nav id="navbar" class="nav2" onclick="toggleMenu()">
+                <a href="#page3" >انتقال به نرخ ارز</a>
+            </nav>            
+        </div>
+
+    </div>
+
+    <!-- Page 3 -->
+    <div class="page" id="page3">
+        <div class="section" id="section21">
+            <h2 class="section-title">نرخ ارز</h2>
+            <img src="" 
+            alt="Embedded Image" class="section-image">
+            <!-- <img src="./images/oil-1402-۱۴۰۳.jpg" alt="Section 1 Image" class="section-image"> -->
+            <p class="section-description"><span class="section-description-bold">نرخ ارز فصل بهار پرتلاطمی را تجربه کرد.</span>بازار ارز در فروردین ماه ۱۴۰۳ با جهش قابل توجه نرخ ارز تا محدوده ۶۷/۹۹۱ تومان مواجه شد؛ اما در دو ماه اردیبهشت و خرداد از روند نسبتاً با ثبات‌تری برخوردار شد و در پایان خرداد ۱۴۰۳ به ۵۸/۷۷۰ تومان در برابر هر دلار رسید که بیانگر کاهش 1.4 درصد در مقیاس فصلی و افزایش ۱۶/۲ درصد در مقیاس سالانه است. رسیدن نرخ بازار به ۵۸/۷۷۰ تومان در پایان فصل بهار در حالی اتفاق افتاد که نرخ ارز ترجیحی نیما همچنان در ۲۸/۵۰۰ ریال تثبیت شد، اما نرخ ارز مبادله ای با افزایش محدود به ۴۲/۹۰۰ تومان در پایان خرداد ۱۴۰۳ رسید.</p>
+            <p class="section-description"><span class="section-description-bold">هرچند عدم بروز تغییر شدیدی در نرخ ارز در تابستان بیشتر محتمل است اما با توجه به فشار موجود بر نرخ ارز و تنش در روابط بین الملل ریسک افزایش نرخ همچنان بالاست.</span>با توجه به مجموعه متغیرهای موثر بر نرخ ارز و چشم انداز بازار در خصوص احتمال بیشتر افزایش نرخ ارز، انتظار می رود نرخ ارز بازار در ماه های آتی اثرات افزاینده بر نرخ تورم در بر داشته باشد. در خصوص نرخ‌های ترجیحی ارز نیز انتظار می‌رود نرخ ارز مبادله‌ای طبق روند ماه‌های اخیر با افزایش تدریجی و ملایم مواجه باشد که اثرات تورمی محدودی بر جای خواهد گذارد. در خصوص نرخ ارز نیمایی کالاهای اساسی مشخص نیست که آیا این نرخ همچنان در محدوده ۲۸۵۰۰ ثابت خواهد ماند یا تعدیل خواهد شد؛ اما در صورت تعدیل نرخ ترجیحی نیمایی برای کالاهای اساسی، اثرات تورمی آن گریزناپذیر خواهد بود.</p>
+            <p class="section-description-bold">لطفا به سوالات زیر برای چشم انداز نرخ ارز در پاییز ۱۴۰۳ با جاگذاری دایره ها در محل مورد نظر بر روی خط پاسخ بفرمایید :</p>
+            <!-- Question 1 -->
+            <div class="question-container">
+                <h3 class="question-title">۱/۱.	حداقل رنج و دامنه مقادیری که به احتمال بیش از ۵۰ درصد نرخ ارز در پاییز ۱۴۰۳ در حدود آن دامنه خواهد بود را از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container">
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-1">15000</span>
+                            <span id="page3MaxValue1-1">95187</span>
+                        </div>
+                        <div class="green-line" id="page3GreenLine1-1" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page3MinRange1-1" min="15000" max="95187" step="0.01" value="25000" oninput="updateRangeValues('page3MinRange1-1', 'page3MaxRange1-1', 'page3MinValue1-1', 'page3MaxValue1-1', 'page3GreenLine1-1', 'page3MinValue1-2', 'page3MaxValue1-2','page3SelectedValue1-2')">
+                        <input  type="range" class="range-input" id="page3MaxRange1-1" min="15000" max="95187" step="0.01" value="90000" oninput="updateRangeValues('page3MinRange1-1', 'page3MaxRange1-1', 'page3MinValue1-1', 'page3MaxValue1-1', 'page3GreenLine1-1', 'page3MinValue1-2', 'page3MaxValue1-2','page3SelectedValue1-2')">
+                    </div>
+                </div>
+                <h3 class="question-title">۱/۲.	در رنج و دامنه مقادیر مشخص شده در سوال فوق، برای فروش در پاییز ۱۴۰۳ لطفا نرخ ارز که بیشترین احتمال وقوع را دارد از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-2">15000</span>
+                            <span id="page3MaxValue1-2">95187</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page3Scale1-2" min="15000" max="95187" step="0.01" value="55000.18" oninput="updateSecondScaleValue('page3Scale1-2', 'page3SelectedValue1-2')">
+                            <span id="page3SelectedValue1-2" class="range-value-display">55000.18</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۳. برای پاییز ۱۴۰۳ رنج و دامنه ای از مقادیر را مشخص بفرمایید که به احتمال ۹۰ درصد بعید باشد که نرخ ارز از آن فراتر رود:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-3">15000</span>
+                            <span id="page3MaxValue1-3">95187</span>
+                        </div>
+                        <div class="green-line" id="page3GreenLine1-3" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page3MinRange1-3" min="15000" max="95187" step="0.01" value="25000" oninput="updateRangeValues('page3MinRange1-3', 'page3MaxRange1-3', 'page3MinValue1-3', 'page3MaxValue1-3', 'page3GreenLine1-3','page3MinValue1-3', 'page3MaxValue1-3','')">
+                        <input  type="range" class="range-input" id="page3MaxRange1-3" min="15000" max="95187" step="0.01" value="90000" oninput="updateRangeValues('page3MinRange1-3', 'page3MaxRange1-3', 'page3MinValue1-3', 'page3MaxValue1-3', 'page3GreenLine1-3','page3MinValue1-3', 'page3MaxValue1-3','')">
+                    </div>
+                </div>                
+                <!-- فصل پایانی دوره یکساله پیش رو  -->
+                <p class="section-description-bold" >علاوه بر پاییز ۱۴۰۳، پیش بینی خود را برای محتمل ترین مقدار  نرخ ارز در چهار فصل پیش رو به ترتیب برای سایر فصول مشخص فرمایید: </p>
+                <h3 class="question-title">۱/۴.	محتمل ترین مقدار  نرخ ارز برای زمستان ۱۴۰۳:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-4">0.72</span>
+                            <span id="page3MaxValue1-4">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page3Scale1-4" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page3Scale1-4', 'page3SelectedValue1-4')">
+                            <span id="page3SelectedValue1-4" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۵.	محتمل ترین مقدار  نرخ ارز برای بهار ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-5">0.72</span>
+                            <span id="page3MaxValue1-5">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page3Scale1-5" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page3Scale1-5', 'page3SelectedValue1-5')">
+                            <span id="page3SelectedValue1-5" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۶.	محتمل ترین مقدار  نرخ ارز برای تابستان ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-6">0.72</span>
+                            <span id="page3MaxValue1-6">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page3Scale1-6" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page3Scale1-6', 'page3SelectedValue1-6')">
+                            <span id="page3SelectedValue1-6" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <p class="section-description-bold" >یش بینی خود را از حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار  نرخ ارز در فصول پیش رو، در حدود آن دامنه خواهد بود ارایه فرمایید:</p>
+                <h3 class="question-title">۱/۷.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار  نرخ ارز در زمستان ۱۴۰۳ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-7">0.72</span>
+                            <span id="page3MaxValue1-7">2.68</span>
+                        </div>
+                        <div class="green-line" id="page3GreenLine1-7" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page3MinRange1-7" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page3MinRange1-7','page3MaxRange1-7', 'page3MinValue1-7', 'page3MaxValue1-7', 'page3GreenLine1-7','page3MinValue1-7', 'page3MaxValue1-7','')">
+                        <input  type="range" class="range-input" id="page3MaxRange1-7" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page3MinRange1-7', 'page3MaxRange1-7', 'page3MinValue1-7', 'page3MaxValue1-7', 'page3GreenLine1-7','page3MinValue1-7', 'page3MaxValue1-7','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۸.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار  نرخ ارز در بهار ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-8">0.72</span>
+                            <span id="page3MaxValue1-8">2.68</span>
+                        </div>
+                        <div class="green-line" id="page3GreenLine1-8" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page3MinRange1-8" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page3MinRange1-8', 'page3MaxRange1-8', 'page3MinValue1-8', 'page3MaxValue1-8', 'page3GreenLine1-8','page3MinValue1-8', 'page3MaxValue1-8','')">
+                        <input  type="range" class="range-input" id="page3MaxRange1-8" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page3MinRange1-8', 'page3MaxRange1-8', 'page3MinValue1-8', 'page3MaxValue1-8', 'page3GreenLine1-8','page3MinValue1-8', 'page3MaxValue1-8','')">
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۹.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار نرخ ارز در تابستان ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page3MinValue1-9">0.72</span>
+                            <span id="page3MaxValue1-9">2.68</span>
+                        </div>
+                        <div class="green-line" id="page3GreenLine1-9" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page3MinRange1-9" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page3MinRange1-9', 'page3MaxRange1-9', 'page3MinValue1-9', 'page3MaxValue1-9', 'page3GreenLine1-9','page3MinValue1-9', 'page3MaxValue1-9','')">
+                        <input  type="range" class="range-input" id="page3MaxRange1-9" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page3MinRange1-9', 'page3MaxRange1-9', 'page3MinValue1-9', 'page3MaxValue1-9', 'page3GreenLine1-9','page3MinValue1-9', 'page3MaxValue1-9','')">
+                    </div>
+                </div>                
+
+            </div>
+            <nav id="navbar" class="nav2" onclick="toggleMenu()">
+                <a href="#page4" >انتقال به نرخ بازده در بازار بدهی</a>
+            </nav>            
+        </div>
+
+    </div>    
+
+    <!-- Page 4 -->
+    <div class="page" id="page4">
+        <div class="section" id="section41">
+            <h2 class="section-title">نرخ بازده در بازار بدهی</h2>
+            <img src="" 
+            alt="Embedded Image" class="section-image">
+            <!-- <img src="./images/oil-1402-۱۴۰۳.jpg" alt="Section 1 Image" class="section-image"> -->
+            <p class="section-description"><span class="section-description-bold">نرخ بازده اوراق خزانه و شکاف تحقق درآمد در بهار ۱۴۰۳  کاهش یافتند.</span>تا قبل از نیمه خرداد امسال تقاضای اعتباری بانک‌ها عمدتاً به‌صورت توسط قراردادهای توافق بازخرید ۷ یا ۸ روزه بوده تامین می شد. از این تاریخ اما برای چند هفته بانک مرکزی اقدام به اعطای این اعتبار در قالب قراردادهای ۸۴ و ۸۵ روزه نمود. بنابراین، بانک نیازی به تسویه قراردادها در هفته بعد نداشته و به همین دلیل شاهد افت در تقاضای استقراض بانک‌ها در بازار بین بانکی بودیم. این امر سبب شد تا نرخ بازده اوراق خزانه که در زمستان سال گذشته از 27 درصد به 33 درصد رسیده بود، در فصل بهار و بدنبال صدور دستور بانک مرکزی برای رعایت نرخ های مصوب سود بانکی اندکی کاهش یابد و در پایان فصل به۳۱/۱درصد برسد. </p>
+            <p class="section-description"><span class="section-description-bold">انتظار می رود که در پایان تابستان شاهد افزایش تقاضای اعتباری بانک‌ها در بازار بین‌بانکی ریالی و افزایش نرخ باشیم.</span>از آنجا که فعلا بانک ها منابعی در اختیار دارند، تا زمانی که بانک این منابع را در اختیار دارد و نیاز به تسویه ندارد (و اگر بعد از این مدت تسویه کند، می‌تواند از بانک مرکزی تقاضا نماید)، اقدام به خرید دارایی می‌کند. اما با پایان این مهلت احتمالاشاهد افزایش تقاضای بانک ها در بازار بین بانکی و به تبع آن افزایش نرخ در بازار اوراق بدهی خواهیم بود.</p>
+            <p class="section-description-bold">لطفا به سوالات زیر برای چشم انداز نرخ بازده در بازار بدهی در پاییز ۱۴۰۳ با جاگذاری دایره ها در محل مورد نظر بر روی خط پاسخ بفرمایید:</p>
+            <!-- Question 1 -->
+            <div class="question-container">
+                <h3 class="question-title">۱/۱. حداقل رنج و دامنه مقادیری که به احتمال بیش از ۵۰ درصد نرخ بازده در پاییز ۱۴۰۳ در حدود آن دامنه خواهد بود را از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container">
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-1">12.00</span>
+                            <span id="page4MaxValue1-1">49.14</span>
+                        </div>
+                        <div class="green-line" id="page4GreenLine1-1" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page4MinRange1-1" min="12.00" max="49.14" step="0.01" value="21" oninput="updateRangeValues('page4MinRange1-1', 'page4MaxRange1-1', 'page4MinValue1-1', 'page4MaxValue1-1', 'page4GreenLine1-1', 'page4MinValue1-2', 'page4MaxValue1-2','page4SelectedValue1-2')">
+                        <input  type="range" class="range-input" id="page4MaxRange1-1" min="12.00" max="49.14" step="0.01" value="40" oninput="updateRangeValues('page4MinRange1-1', 'page4MaxRange1-1', 'page4MinValue1-1', 'page4MaxValue1-1', 'page4GreenLine1-1', 'page4MinValue1-2', 'page4MaxValue1-2','page4SelectedValue1-2')">
+                    </div>
+                </div>
+                <h3 class="question-title">۱/۲.	در رنج و دامنه مقادیر مشخص شده در سوال فوق، برای فروش در پاییز ۱۴۰۳ لطفا نرخ بازده که بیشترین احتمال وقوع را دارد از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-2">12.00</span>
+                            <span id="page4MaxValue1-2">49.14</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page4Scale1-2" min="12.00" max="49.14" step="0.01" value="30.18" oninput="updateSecondScaleValue('page4Scale1-2', 'page4SelectedValue1-2')">
+                            <span id="page4SelectedValue1-2" class="range-value-display">30.18</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۳. برای پاییز ۱۴۰۳ رنج و دامنه ای از مقادیر را مشخص بفرمایید که به احتمال ۹۰ درصد بعید باشد که نرخ بازده از آن فراتر رود</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-3">12.00</span>
+                            <span id="page4MaxValue1-3">49.14</span>
+                        </div>
+                        <div class="green-line" id="page4GreenLine1-3" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page4MinRange1-3" min="12.00" max="49.14" step="0.01" value="21" oninput="updateRangeValues('page4MinRange1-3', 'page4MaxRange1-3', 'page4MinValue1-3', 'page4MaxValue1-3', 'page4GreenLine1-3','page4MinValue1-3', 'page4MaxValue1-3','')">
+                        <input  type="range" class="range-input" id="page4MaxRange1-3" min="12.00" max="49.14" step="0.01" value="40" oninput="updateRangeValues('page4MinRange1-3', 'page4MaxRange1-3', 'page4MinValue1-3', 'page4MaxValue1-3', 'page4GreenLine1-3','page4MinValue1-3', 'page4MaxValue1-3','')">
+                    </div>
+                </div>       
+                <!-- فصل پایانی دوره یکساله پیش رو  -->
+                <p class="section-description-bold" >علاوه بر پاییز ۱۴۰۳، پیش بینی خود را برای محتمل ترین مقدار رشد نقدینگی در چهار فصل پیش رو به ترتیب برای سایر فصول مشخص فرمایید: </p>
+                <h3 class="question-title">۱/۴.	محتمل ترین مقدار رشد نقدینگی برای زمستان ۱۴۰۳:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-4">0.72</span>
+                            <span id="page4MaxValue1-4">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page4Scale1-4" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page4Scale1-4', 'page4SelectedValue1-4')">
+                            <span id="page4SelectedValue1-4" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۵.	محتمل ترین مقدار رشد نقدینگی برای بهار ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-5">0.72</span>
+                            <span id="page4MaxValue1-5">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page4Scale1-5" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page4Scale1-5', 'page4SelectedValue1-5')">
+                            <span id="page4SelectedValue1-5" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۶.	محتمل ترین مقدار رشد نقدینگی برای تابستان ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-6">0.72</span>
+                            <span id="page4MaxValue1-6">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page4Scale1-6" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page4Scale1-6', 'page4SelectedValue1-6')">
+                            <span id="page4SelectedValue1-6" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <p class="section-description-bold" >یش بینی خود را از حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در فصول پیش رو، در حدود آن دامنه خواهد بود ارایه فرمایید:</p>
+                <h3 class="question-title">۱/۷.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در زمستان ۱۴۰۳ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-7">0.72</span>
+                            <span id="page4MaxValue1-7">2.68</span>
+                        </div>
+                        <div class="green-line" id="page4GreenLine1-7" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page4MinRange1-7" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page4MinRange1-7','page4MaxRange1-7', 'page4MinValue1-7', 'page4MaxValue1-7', 'page4GreenLine1-7','page4MinValue1-7', 'page4MaxValue1-7','')">
+                        <input  type="range" class="range-input" id="page4MaxRange1-7" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page4MinRange1-7', 'page4MaxRange1-7', 'page4MinValue1-7', 'page4MaxValue1-7', 'page4GreenLine1-7','page4MinValue1-7', 'page4MaxValue1-7','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۸.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در بهار ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-8">0.72</span>
+                            <span id="page4MaxValue1-8">2.68</span>
+                        </div>
+                        <div class="green-line" id="page4GreenLine1-8" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page4MinRange1-8" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page4MinRange1-8', 'page4MaxRange1-8', 'page4MinValue1-8', 'page4MaxValue1-8', 'page4GreenLine1-8','page4MinValue1-8', 'page4MaxValue1-8','')">
+                        <input  type="range" class="range-input" id="page4MaxRange1-8" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page4MinRange1-8', 'page4MaxRange1-8', 'page4MinValue1-8', 'page4MaxValue1-8', 'page4GreenLine1-8','page4MinValue1-8', 'page4MaxValue1-8','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۹.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار رشد نقدینگی در تابستان ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page4MinValue1-9">0.72</span>
+                            <span id="page4MaxValue1-9">2.68</span>
+                        </div>
+                        <div class="green-line" id="page4GreenLine1-9" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page4MinRange1-9" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page4MinRange1-9', 'page4MaxRange1-9', 'page4MinValue1-9', 'page4MaxValue1-9', 'page4GreenLine1-9','page4MinValue1-9', 'page4MaxValue1-9','')">
+                        <input  type="range" class="range-input" id="page4MaxRange1-9" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page4MinRange1-9', 'page4MaxRange1-9', 'page4MinValue1-9', 'page4MaxValue1-9', 'page4GreenLine1-9','page4MinValue1-9', 'page4MaxValue1-9','')">
+                    </div>
+                </div>                
+
+                <!-- <div id="message1" class="message">Ranges saved successfully!</div> -->
+            </div>
+            <nav id="navbar" class="nav2" onclick="toggleMenu()">
+                <a href="#page5" >انتقال به شاخص نااطمینانی</a>
+            </nav>            
+        </div>
+
+    </div>
+
+    <!-- Page 5 -->
+    <div class="page" id="page5">
+        <div class="section" id="section51">
+            <h2 class="section-title">شاخص نااطمینانی</h2>
+            <img src="" 
+            alt="Embedded Image" class="section-image">
+            <!-- <img src="./images/oil-1402-۱۴۰۳.jpg" alt="Section 1 Image" class="section-image"> -->
+            <p class="section-description"><span class="section-description-bold">در بهار سال ۱۴۰۳ تنش های سیاسی و منطقه ای به حد بی سابقه ای افزایش یافت.</span>پس از تهاجم جنگنده های اسراییلی به ساختمان کنسول گری ایران در لبنان شاهد موشک باران اسراییل توسط ایران بودیم. با تقابل مستقیم و بی سابقه میان جمهوری اسلامی ایران و رژیم صهیونیستی در روزهای آغازین فروردین ماه، شاخص نا اطمینانی که متاثر از تحریم، تنش های منطقه ای و نوسانات بازار است تا مقدار 99 افزایش یافت. این سطح از تنش تقریبا معادل وضعیت نااطمینانی در زمان ترور سردار سلیمانی بود که رقم این شاخص را 102 رساند. با این حال اطمینان از محدود بودن دامنه این تقابل و سیاست های بانک مرکزی سبب شد آرامش دوباره به بازارها برگردد و شاخص در خرداد ماه به رقم ۵۶ برسد.</p>
+            <p class="section-description"><span class="section-description-bold">با افزایش شانس نماینده جریان های معتدل انتظار می رود شاهد تحولات مثبت در جهت کاهش نااطمینانی باشیم.</span>انتخاب پزشکیان در چهاردهمین انتخابات ریاست جمهوری ایران، می تواند شانس تغییر در سیاست  خارجی و بهبود روابط خارجی کشور را افزایش دهد. اما در مجموعه ریسک های پیش روی روابط خارجی، یکی از مهمترین ریسک ها در سال جاری مربوط به انتخابات ریاست جمهوری آمریکا است که نتایج حاصل از آن در صورت پیروزی ترامپ می-تواند ریسک های روابط خارجی کشور و به تبع آن ریسک های تورمی را در ماه های پایانی سال افزایش دهد.</p>
+            <p class="section-description-bold">لطفا به سوالات زیر برای چشم انداز شاخص نااطمینانی در پاییز ۱۴۰۳ با جاگذاری دایره ها در محل مورد نظر بر روی خط پاسخ بفرمایید:</p>
+            <!-- Question 1 -->
+            <div class="question-container">
+                <h3 class="question-title">۱/۱. حداقل رنج و دامنه مقادیری که به احتمال بیش از ۵۰ درصد شاخص نااطمینانی در پاییز ۱۴۰۳ در حدود آن دامنه خواهد بود را از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container">
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-1">30.00</span>
+                            <span id="page5MaxValue1-1">140.00</span>
+                        </div>
+                        <div class="green-line" id="page5GreenLine1-1" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page5MinRange1-1" min="30.00" max="140.00" step="0.01" value="60" oninput="updateRangeValues('page5MinRange1-1', 'page5MaxRange1-1', 'page5MinValue1-1', 'page5MaxValue1-1', 'page5GreenLine1-1', 'page5MinValue1-2', 'page5MaxValue1-2','page5SelectedValue1-2')">
+                        <input  type="range" class="range-input" id="page5MaxRange1-1" min="30.00" max="140.00" step="0.01" value="110" oninput="updateRangeValues('page5MinRange1-1', 'page5MaxRange1-1', 'page5MinValue1-1', 'page5MaxValue1-1', 'page5GreenLine1-1', 'page5MinValue1-2', 'page5MaxValue1-2','page5SelectedValue1-2')">
+                    </div>
+                </div>
+                <h3 class="question-title">۱/۲.	در رنج و دامنه مقادیر مشخص شده در سوال فوق، برای فروش در پاییز ۱۴۰۳ لطفا شاخص نااطمینانی که بیشترین احتمال وقوع را دارد از نظر خود مشخص فرمایید:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-2">30.00</span>
+                            <span id="page5MaxValue1-2">140.00</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page5Scale1-2" min="30.00" max="140.00" step="0.01" value="85.18" oninput="updateSecondScaleValue('page5Scale1-2', 'page5SelectedValue1-2')">
+                            <span id="page5SelectedValue1-2" class="range-value-display">85.18</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۳. برای پاییز ۱۴۰۳ رنج و دامنه ای از مقادیر را مشخص بفرمایید که به احتمال ۹۰ درصد بعید باشد که شاخص نااطمینانی از آن فراتر رود</h3>
+                <div class="linear-scale-container" id="secondScaleContainer1" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-3">30.00</span>
+                            <span id="page5MaxValue1-3">140.00</span>
+                        </div>
+                        <div class="green-line" id="page5GreenLine1-3" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page5MinRange1-3" min="30.00" max="140.00" step="0.01" value="60" oninput="updateRangeValues('page5MinRange1-3', 'page5MaxRange1-3', 'page5MinValue1-3', 'page5MaxValue1-3', 'page5GreenLine1-3','page5MinValue1-3', 'page5MaxValue1-3','')">
+                        <input  type="range" class="range-input" id="page5MaxRange1-3" min="30.00" max="140.00" step="0.01" value="110" oninput="updateRangeValues('page5MinRange1-3', 'page5MaxRange1-3', 'page5MinValue1-3', 'page5MaxValue1-3', 'page5GreenLine1-3','page5MinValue1-3', 'page5MaxValue1-3','')">
+                    </div>
+                </div>                
+                <!-- فصل پایانی دوره یکساله پیش رو  -->
+                <p class="section-description-bold" >علاوه بر پاییز ۱۴۰۳، پیش بینی خود را برای محتمل ترین مقدار شاخص نااطمینانی در چهار فصل پیش رو به ترتیب برای سایر فصول مشخص فرمایید: </p>
+                <h3 class="question-title">۱/۴.	محتمل ترین مقدار شاخص نااطمینانی برای زمستان ۱۴۰۳:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-4">0.72</span>
+                            <span id="page5MaxValue1-4">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page5Scale1-4" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page5Scale1-4', 'page5SelectedValue1-4')">
+                            <span id="page5SelectedValue1-4" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۵.	محتمل ترین مقدار شاخص نااطمینانی برای بهار ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-5">0.72</span>
+                            <span id="page5MaxValue1-5">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page5Scale1-5" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page5Scale1-5', 'page5SelectedValue1-5')">
+                            <span id="page5SelectedValue1-5" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <h3 class="question-title">۱/۶.	محتمل ترین مقدار شاخص نااطمینانی برای تابستان ۱۴۰۴:</h3>
+                <div class="linear-scale-container" id="secondScaleContainer11" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-6">0.72</span>
+                            <span id="page5MaxValue1-6">2.68</span>
+                        </div>
+                        <div class="range-input-wrapper">
+                            <input type="range" class="range-input" id="page5Scale1-6" min="0.72" max="2.68" step="0.01" value="1.7" oninput="updateSecondScaleValue('page5Scale1-6', 'page5SelectedValue1-6')">
+                            <span id="page5SelectedValue1-6" class="range-value-display">1.7</span>
+                        </div>
+                    </div>
+                </div>    
+                <p class="section-description-bold" >یش بینی خود را از حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار شاخص نااطمینانی در فصول پیش رو، در حدود آن دامنه خواهد بود ارایه فرمایید:</p>
+                <h3 class="question-title">۱/۷.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار شاخص نااطمینانی در زمستان ۱۴۰۳ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-7">0.72</span>
+                            <span id="page5MaxValue1-7">2.68</span>
+                        </div>
+                        <div class="green-line" id="page5GreenLine1-7" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page5MinRange1-7" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page5MinRange1-7','page5MaxRange1-7', 'page5MinValue1-7', 'page5MaxValue1-7', 'page5GreenLine1-7','page5MinValue1-7', 'page5MaxValue1-7','')">
+                        <input  type="range" class="range-input" id="page5MaxRange1-7" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page5MinRange1-7', 'page5MaxRange1-7', 'page5MinValue1-7', 'page5MaxValue1-7', 'page5GreenLine1-7','page5MinValue1-7', 'page5MaxValue1-7','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۸.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار شاخص نااطمینانی در بهار ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-8">0.72</span>
+                            <span id="page5MaxValue1-8">2.68</span>
+                        </div>
+                        <div class="green-line" id="page5GreenLine1-8" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page5MinRange1-8" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page5MinRange1-8', 'page5MaxRange1-8', 'page5MinValue1-8', 'page5MaxValue1-8', 'page5GreenLine1-8','page5MinValue1-8', 'page5MaxValue1-8','')">
+                        <input  type="range" class="range-input" id="page5MaxRange1-8" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page5MinRange1-8', 'page5MaxRange1-8', 'page5MinValue1-8', 'page5MaxValue1-8', 'page5GreenLine1-8','page5MinValue1-8', 'page5MaxValue1-8','')">
+                    </div>
+                </div>                
+                <h3 class="question-title">۱/۹.	حداقل رنج و دامنه مقادیری که به احتمال بیش از 50 درصد مقدار شاخص نااطمینانی در تابستان ۱۴۰۴ در آن حدود خواهد بود:</h3>
+                <div class="linear-scale-container" >
+                    <div class="linear-scale">
+                        <div class="range-values">
+                            <span id="page5MinValue1-9">0.72</span>
+                            <span id="page5MaxValue1-9">2.68</span>
+                        </div>
+                        <div class="green-line" id="page5GreenLine1-9" ></div> <!-- Green line between the sliders -->
+                        <input  type="range" class="range-input" id="page5MinRange1-9" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page5MinRange1-9', 'page5MaxRange1-9', 'page5MinValue1-9', 'page5MaxValue1-9', 'page5GreenLine1-9','page5MinValue1-9', 'page5MaxValue1-9','')">
+                        <input  type="range" class="range-input" id="page5MaxRange1-9" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page5MinRange1-9', 'page5MaxRange1-9', 'page5MinValue1-9', 'page5MaxValue1-9', 'page5GreenLine1-9','page5MinValue1-9', 'page5MaxValue1-9','')">
+                    </div>
+                </div>                
+   
+                <!-- <div id="message1" class="message">Ranges saved successfully!</div> -->
+            </div>
+            <nav id="navbar" class="nav2" onclick="toggleMenu()">
+                <a href="#pageEnd" >انتقال به ارسال اطلاعات</a>
+            </nav>            
+        </div>
+
+    </div>    
+    <!-- End Page -->
+    <div class="page" id="pageEnd">
+        <h2 class="section-title">ارسال پاسخها</h2>
+        <p class="section-description-bold">سپاس فراوان از وقتی که گذاشتید. لطفا اگر پاسخها تکمیل شده است  تیک تایید را بزنید و سپس  دکمه ارسال را بزنید:</p>
+        
+        <!-- Checkbox for confirmation -->
+        <div>
+            <input type="checkbox" id="confirmationCheckbox" onclick="showSendOptions()">
+            <label for="confirmationCheckbox" class="section-description-bold">تایید میشود که به پرسشها پاسخ داده شده است</label>
+        </div>
+        
+        <!-- Message and Button (Initially hidden) -->
+        <div id="confirmationMessage" style="display: none; margin-top: 20px;">
+            <p><strong>زمان ارسال:</strong> <span id="confirmationTimestamp"></span></p>
+            <button id="sendButton" onclick="sendAnswers()" style="font-family: 'Vazirmatn';font-weight: bold;background-color: azure;">ارسال پاسخها</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('click', function(event) {
+            var navbar = document.getElementById('navbar');
+            var menuIcon = document.querySelector('.menu-icon');
+            
+            // Check if the click was outside the navbar and menu icon
+            if (!navbar.contains(event.target) && !menuIcon.contains(event.target)) {
+                navbar.classList.remove('active'); // Close the menu
+            }
+        });        
+        function toggleMenu() {
+            document.getElementById('navbar').classList.toggle('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default anchor behavior
+                const targetId = this.getAttribute('href').substring(1); // Get the target page ID
+                showPage(targetId);
+                toggleMenu(); // Hide the menu after clicking
+            });
+        });
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                if (page.id === pageId) {
+                    page.style.display = 'block'; // Show the target page
+                } else {
+                    page.style.display = 'none'; // Hide other pages
+                }
+            });
+        }
+
+        // Show the first page by default
+        showPage('page1');
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+            if (email) {
+                localStorage.setItem('userEmail', email);
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('header').style.display = 'flex';
+                document.getElementById('page1').style.display = 'block';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        }
+
+        let previousMinRangeValue = null;
+        let previousMaxRangeValue = null;
+        function updateRangeValues(minRangeId, maxRangeId, minValueId, maxValueId, greenLineId, minValue2Id, maxValue2Id,pageScaleId) {
+            const minRange = document.getElementById(minRangeId);
+            const maxRange = document.getElementById(maxRangeId);
+            const minValue = document.getElementById(minValueId);
+            const maxValue = document.getElementById(maxValueId);
+            const greenLine = document.getElementById(greenLineId);
+            const minValue2 = document.getElementById(minValue2Id);
+            const maxValue2 = document.getElementById(maxValue2Id);
+            const pageScale = document.getElementById(pageScaleId);
+            // If previousMinRangeValue is null, set it to the current minRange value
+            if (previousMinRangeValue === null) {
+                previousMaxRangeValue = maxRange.value;
+                previousMinRangeValue = minRange.value;
+            }
+
+            // Check if minRange value exceeds maxRange value
+            if (minRange && maxRange) {
+                if(parseFloat(minRange.value) > parseFloat(maxRange.value)) {
+                    // If minRange exceeds maxRange, revert minRange to its previous value
+                    minRange.value = maxRange.value;
+                    maxRange.value = previousMaxRangeValue;
+                } else {
+                    // Otherwise, update the previousMinRangeValue
+                    previousMaxRangeValue = maxRange.value;
+                }
+            } else{
+                let x =0
+            }
+
+            // Update displayed min and max values
+            // minValue.textContent = parseFloat(minRange.value).toFixed(2);
+            // maxValue.textContent = parseFloat(maxRange.value).toFixed(2);
+
+            if(!minRange){
+                let x=0;
+            }
+            minValue.textContent = parseFloat(minRange.value).toLocaleString('fa', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            maxValue.textContent = parseFloat(maxRange.value).toLocaleString('fa', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Update the green line
+            const minPercentage = (minRange.value - minRange.min) / (minRange.max - minRange.min) * 100;
+            const maxPercentage = (maxRange.value - maxRange.min) / (maxRange.max - maxRange.min) * 100;
+
+            greenLine.style.left = minPercentage + '%';
+            greenLine.style.width = (maxPercentage - minPercentage) + '%';
+
+            // Update minValue2 and maxValue2 simultaneously
+            minValue2.textContent = minValue.textContent;
+            maxValue2.textContent = maxValue.textContent;
+            if(pageScale!=null){
+                pageScale.textContent = ((parseFloat(minRange.value)+parseFloat(maxRange.value))/2).toLocaleString('fa', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        }
+
+        // function toggleSecondScale(sectionId,idx) {
+        //     const section = document.getElementById(sectionId);
+        //     const scaleContainers = section.querySelectorAll('.linear-scale-container');
+
+        //     // Handle the first two scales based on the first container's inputs
+        //     const firstScaleInputs = scaleContainers[idx].querySelectorAll('input[type="range"]');
+        //     toggleSingleScale(scaleContainers[idx+1], firstScaleInputs);
+        //     toggleSingleScale(scaleContainers[idx+2], firstScaleInputs);
+
+        //     // Handle the third scale based on the inputs of the third container
+        //     // const thirdScaleInputs = scaleContainers[3].querySelectorAll('input[type="range"]');
+        //     // toggleSingleScale(scaleContainers[4], thirdScaleInputs);
+        //     // toggleSingleScale(scaleContainers[5], firstScaleInputs);
+        //     // If there's a fourth scale, you can add it here in a similar way
+        //     // const fourthScaleInputs = scaleContainers[5].querySelectorAll('input[type="range"]');
+        //     // toggleSingleScale(scaleContainers[5], fourthScaleInputs);
+        // }
+
+        // function toggleSingleScale(scaleContainer, referenceInputs) {
+        //     if (scaleContainer.style.display === 'none' || scaleContainer.style.display === '') {
+        //         const lowerValue = parseFloat(referenceInputs[0].value);
+        //         const upperValue = parseFloat(referenceInputs[1].value);
+
+        //         const secondScale = scaleContainer.querySelector('input[type="range"]');
+        //         const minValueSpan = scaleContainer.querySelector('.range-values span:nth-child(1)');
+        //         const maxValueSpan = scaleContainer.querySelector('.range-values span:nth-child(2)');
+
+        //         secondScale.min = lowerValue;
+        //         secondScale.max = upperValue;
+        //         secondScale.value = (lowerValue + upperValue) / 2; // Default to the midpoint
+        //         minValueSpan.textContent = lowerValue.toFixed(2);
+        //         maxValueSpan.textContent = upperValue.toFixed(2);
+
+        //         scaleContainer.style.display = 'flex';
+        //     }
+        // }
+
+        function updateSecondScaleValue(scaleId, maxValueId) {
+            if(!document.getElementById(scaleId)){
+                let x=0;
+            }
+            const selectedPoint = parseFloat(document.getElementById(scaleId).value).toLocaleString('fa', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById(maxValueId).textContent = selectedPoint;
+        }
+
+        function saveAndShowNextLink(currentSectionId, nextSectionId) {
+            const section = document.getElementById(currentSectionId);
+            const isChecked = section.querySelector('.linear-scale-container:nth-of-type(2) input[type="checkbox"]').checked;
+            const nextSectionLink = section.querySelector('.next-section-link');
+            const message = section.querySelector('.message');
+
+            if (isChecked) {
+                // Select all range inputs in the first linear scale container
+                const firstScaleInputs = section.querySelectorAll('.linear-scale-container:nth-of-type(1) input[type="range"]');
+                const lower0 = parseFloat(firstScaleInputs[0].value).toFixed(2);
+                const upper0 = parseFloat(firstScaleInputs[1].value).toFixed(2);
+
+                // Select the range input in the second linear scale container
+                const selectedPoint = parseFloat(section.querySelector('.linear-scale-container:nth-of-type(2) input[type="range"]').value).toFixed(2);
+
+                // Save the ranges in localStorage
+                const ranges = `${lower0}-${upper0}, ${lower0}-${selectedPoint}-${upper0}`;
+                localStorage.setItem(`${currentSectionId}Ranges`, ranges);
+
+                // Update the link to the next section with the correct caption
+                const nextSectionCaption = nextSectionId === 'sectionEnd' ? 'Submit Survey' : `Go to ${nextSectionId.replace('section', 'Section ')}`;
+                nextSectionLink.querySelector('a').textContent = nextSectionCaption;
+                nextSectionLink.querySelector('a').setAttribute('href', `#${nextSectionId}`);
+
+                nextSectionLink.style.display = 'block'; // Show the link to the next section
+                message.style.display = 'block'; // Show the success message
+            } else {
+                nextSectionLink.style.display = 'none';
+                message.style.display = 'none'; // Hide the success message
+            }
+        }
+
+        // Initialize the first section's displayed values and green lines
+        updateRangeValues('page1MinRange1-1', 'page1MaxRange1-1', 'page1MinValue1-1', 'page1MaxValue1-1', 'page1GreenLine1-1','page1MinValue1-2','page1MaxValue1-2','page1Scale1-2');
+        updateRangeValues('page1MinRange1-3', 'page1MaxRange1-3', 'page1MinValue1-3', 'page1MaxValue1-3', 'page1GreenLine1-3','page1MinValue1-3','page1MaxValue1-3','');
+        updateRangeValues('page1MinRange1-7', 'page1MaxRange1-7', 'page1MinValue1-7', 'page1MaxValue1-7', 'page1GreenLine1-7','page1MinValue1-7','page1MaxValue1-7','')
+        updateRangeValues('page1MinRange1-8', 'page1MaxRange1-8', 'page1MinValue1-8', 'page1MaxValue1-8', 'page1GreenLine1-8','page1MinValue1-8','page1MaxValue1-8','')
+        updateRangeValues('page1MinRange1-9', 'page1MaxRange1-9', 'page1MinValue1-9', 'page1MaxValue1-9', 'page1GreenLine1-9','page1MinValue1-9','page1MaxValue1-9','')
+        updateSecondScaleValue('page1Scale1-2', 'page1SelectedValue1-2');       
+        updateSecondScaleValue('page1Scale1-6', 'page1SelectedValue1-6');
+        updateSecondScaleValue('page1Scale1-4', 'page1SelectedValue1-4');
+        updateSecondScaleValue('page1Scale1-5', 'page1SelectedValue1-5');       
+
+        updateRangeValues('page2MinRange1-1', 'page2MaxRange1-1', 'page2MinValue1-1', 'page2MaxValue1-1', 'page2GreenLine1-1','page2MinValue1-2','page2MaxValue1-2','page2Scale1-2');
+        updateRangeValues('page2MinRange1-3', 'page2MaxRange1-3', 'page2MinValue1-3', 'page2MaxValue1-3', 'page2GreenLine1-3','page2MinValue1-3','page2MaxValue1-3','');
+        updateRangeValues('page2MinRange1-8', 'page2MaxRange1-8', 'page2MinValue1-8', 'page2MaxValue1-8', 'page2GreenLine1-8','page2MinValue1-8','page2MaxValue1-8','page2Scale1-8');
+        updateRangeValues('page2MinRange1-7', 'page2MaxRange1-7', 'page2MinValue1-7', 'page2MaxValue1-7', 'page2GreenLine1-7','page2MinValue1-7','page2MaxValue1-7','')
+        updateRangeValues('page2MinRange1-9', 'page2MaxRange1-9', 'page2MinValue1-9', 'page2MaxValue1-9', 'page2GreenLine1-9','page2MinValue1-9','page2MaxValue1-9','')
+        updateSecondScaleValue('page2Scale1-2', 'page2SelectedValue1-2');       
+        updateSecondScaleValue('page2Scale1-6', 'page2SelectedValue1-6');
+        updateSecondScaleValue('page2Scale1-4', 'page2SelectedValue1-4');
+        updateSecondScaleValue('page2Scale1-5', 'page2SelectedValue1-5');       
+
+        updateRangeValues('page3MinRange1-1', 'page3MaxRange1-1', 'page3MinValue1-1', 'page3MaxValue1-1', 'page3GreenLine1-1','page3MinValue1-2','page3MaxValue1-2','page3Scale1-2');
+        updateRangeValues('page3MinRange1-3', 'page3MaxRange1-3', 'page3MinValue1-3', 'page3MaxValue1-3', 'page3GreenLine1-3','page3MinValue1-3','page3MaxValue1-3','');
+        updateRangeValues('page3MinRange1-8', 'page3MaxRange1-8', 'page3MinValue1-5', 'page3MaxValue1-8', 'page3GreenLine1-8','page3MinValue1-8','page3MaxValue1-8','page3Scale1-8');
+        updateRangeValues('page3MinRange1-7', 'page3MaxRange1-7', 'page3MinValue1-7', 'page3MaxValue1-7', 'page3GreenLine1-7','page3MinValue1-7','page3MaxValue1-7','')
+        updateRangeValues('page3MinRange1-9', 'page3MaxRange1-9', 'page3MinValue1-9', 'page3MaxValue1-9', 'page3GreenLine1-9','page3MinValue1-9','page3MaxValue1-9','')
+        updateSecondScaleValue('page3Scale1-2', 'page3SelectedValue1-2');       
+        updateSecondScaleValue('page3Scale1-6', 'page3SelectedValue1-6');
+        updateSecondScaleValue('page3Scale1-4', 'page3SelectedValue1-4');
+        updateSecondScaleValue('page3Scale1-5', 'page3SelectedValue1-5');       
+
+
+        updateRangeValues('page4MinRange1-1', 'page4MaxRange1-1', 'page4MinValue1-1', 'page4MaxValue1-1', 'page4GreenLine1-1','page4MinValue1-2','page4MaxValue1-2','page4Scale1-2');
+        updateRangeValues('page4MinRange1-3', 'page4MaxRange1-3', 'page4MinValue1-3', 'page4MaxValue1-3', 'page4GreenLine1-3','page4MinValue1-3','page4MaxValue1-3','');
+        updateRangeValues('page4MinRange1-8', 'page4MaxRange1-8', 'page4MinValue1-8', 'page4MaxValue1-8', 'page4GreenLine1-8','page4MinValue1-6','page4MaxValue1-6','page4Scale1-6');
+        updateRangeValues('page4MinRange1-7', 'page4MaxRange1-7', 'page4MinValue1-7', 'page4MaxValue1-7', 'page4GreenLine1-7','page4MinValue1-7','page4MaxValue1-7','')
+        updateRangeValues('page4MinRange1-9', 'page4MaxRange1-9', 'page4MinValue1-9', 'page4MaxValue1-9', 'page4GreenLine1-9','page4MinValue1-9','page4MaxValue1-9','')
+        updateSecondScaleValue('page4Scale1-2', 'page4SelectedValue1-2');       
+        updateSecondScaleValue('page4Scale1-6', 'page4SelectedValue1-6');
+        updateSecondScaleValue('page4Scale1-4', 'page4SelectedValue1-4');
+        updateSecondScaleValue('page4Scale1-5', 'page4SelectedValue1-5');       
+
+        updateRangeValues('page5MinRange1-1', 'page5MaxRange1-1', 'page5MinValue1-1', 'page5MaxValue1-1', 'page5GreenLine1-1','page5MinValue1-2','page5MaxValue1-2','page5Scale1-2');
+        updateRangeValues('page5MinRange1-3', 'page5MaxRange1-3', 'page5MinValue1-3', 'page5MaxValue1-3', 'page5GreenLine1-3','page5MinValue1-3','page5MaxValue1-3','');
+        updateRangeValues('page5MinRange1-8', 'page5MaxRange1-8', 'page5MinValue1-8', 'page5MaxValue1-8', 'page5GreenLine1-8','page5MinValue1-6','page5MaxValue1-6','page5Scale1-6');
+        updateRangeValues('page5MinRange1-7', 'page5MaxRange1-7', 'page5MinValue1-7', 'page5MaxValue1-7', 'page5GreenLine1-7','page5MinValue1-7','page5MaxValue1-7','')
+        updateRangeValues('page5MinRange1-9', 'page5MaxRange1-9', 'page5MinValue1-9', 'page5MaxValue1-9', 'page5GreenLine1-9','page5MinValue1-9','page5MaxValue1-9','')
+        updateSecondScaleValue('page5Scale1-2', 'page5SelectedValue1-2');       
+        updateSecondScaleValue('page5Scale1-6', 'page5SelectedValue1-6');
+        updateSecondScaleValue('page5Scale1-4', 'page5SelectedValue1-4');
+        updateSecondScaleValue('page5Scale1-5', 'page5SelectedValue1-5');       
+
+        // Show the confirmation message and the send button when the checkbox is checked
+function showSendOptions() {
+    const checkbox = document.getElementById('confirmationCheckbox');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    const timestamp = new Date().toLocaleString(); // Current timestamp
+
+    if (checkbox.checked) {
+        document.getElementById('confirmationTimestamp').textContent = timestamp;
+        confirmationMessage.style.display = 'block'; // Show message and button
+    } else {
+        confirmationMessage.style.display = 'none'; // Hide message and button
+    }
+}
+
+// Function to collect the required data and send it as JSON
+
+// UserId	Timestamp	Section	Question1_1_baseMin	Question1_1_baseMax	Question1_1_min	Question1_1_max	Question1_2	Question1_3_baseMin	Question1_3_baseMax	Question1_3_min	Question1_3_max	Question1_4	Question1_5_baseMin	Question1_5_baseMax	Question1_5_min	Question1_5_max	Question1_6	Question1_7_baseMin	Question1_7_baseMax	Question1_7_min	Question1_7_max
+function sendAnswers() {
+    const sendButton = document.getElementById('sendButton');
+    const originalColor = sendButton.style.backgroundColor;
+    sendButton.style.backgroundColor = 'green'; 
+    sendButton.style.color = 'white'; 
+    sendButton.innerText='پاسخها در حال ارسال هستند ...'
+    
+    // Collect values from the form
+    const timestamp = new Date().toLocaleString(); // Current timestamp
+    const selectedoptionsPage1 = document.querySelector('input[name="optionspage1"]:checked');
+    const selectedoptionsPage2 = document.querySelector('input[name="optionspage2"]:checked');
+    const selectedoptionsPage3 = document.querySelector('input[name="optionspage3"]:checked');
+    const selectedoptionsPage4 = document.querySelector('input[name="optionspage4"]:checked');
+    const selectedoptionsPage5 = document.querySelector('input[name="optionspage5"]:checked');    
+    const pag1Question1_4 = selectedoptionsPage1.value;
+    const pag2Question1_4 = selectedoptionsPage2.value;
+    const pag3Question1_4 = selectedoptionsPage3.value;
+    const pag4Question1_4 = selectedoptionsPage4.value;
+    const pag4Question1_5 = selectedoptionsPage5.value;
+    const dataToSend = [
+        {
+            UserId: 'user1',
+            Timestamp:timestamp,
+            Section:'Oil',
+            Question1_1_baseMin: '0.72',
+            Question1_1_baseMax: '2.68',
+            Question1_1_min: document.getElementById('page1MinValue1-1').textContent,
+            Question1_1_max: document.getElementById('page1MaxValue1-1').textContent,
+            Question1_2: document.getElementById('page1SelectedValue1-2').textContent,
+            Question1_3_baseMin: '0.72',
+            Question1_3_baseMax: '2.68',
+            Question1_3_min:document.getElementById('page1MinValue1-3').textContent,
+            Question1_3_max:document.getElementById('page1MaxValue1-3').textContent,
+            Question1_4:pag1Question1_4,
+            Question1_5_baseMin:'0.72',
+            Question1_5_baseMax:'2.68',
+            Question1_5_min:document.getElementById('page1MinValue1-5').textContent,
+            Question1_5_max:document.getElementById('page1MaxValue1-5').textContent,
+            Question1_6:document.getElementById('page1SelectedValue1-6').textContent,
+            Question1_7_baseMin:'0.72',
+            Question1_7_baseMax:'2.68',
+            Question1_7_min:document.getElementById('page1MinValue1-7').textContent,
+            Question1_7_max:document.getElementById('page1MaxValue1-7').textContent
+            // Add more values as needed from other pages
+        },
+        {
+            UserId: 'user1',
+            Timestamp:timestamp,
+            Section:'Liquidity growth',
+            Question1_1_baseMin: '13.32',
+            Question1_1_baseMax: '55.16',
+            Question1_1_min: document.getElementById('page2MinValue1-1').textContent,
+            Question1_1_max: document.getElementById('page2MaxValue1-1').textContent,
+            Question1_2: document.getElementById('page2SelectedValue1-2').textContent,
+            Question1_3_baseMin: '13.32',
+            Question1_3_baseMax: '55.16',
+            Question1_3_min:document.getElementById('page2MinValue1-3').textContent,
+            Question1_3_max:document.getElementById('page2MaxValue1-3').textContent,
+            Question1_4:pag2Question1_4,
+            Question1_5_baseMin:'13.32',
+            Question1_5_baseMax:'55.16',
+            Question1_5_min:document.getElementById('page2MinValue1-5').textContent,
+            Question1_5_max:document.getElementById('page2MaxValue1-5').textContent,
+            Question1_6:document.getElementById('page2SelectedValue1-6').textContent,
+            Question1_7_baseMin:'13.32',
+            Question1_7_baseMax:'55.16',
+            Question1_7_min:document.getElementById('page2MinValue1-7').textContent,
+            Question1_7_max:document.getElementById('page2MaxValue1-7').textContent
+            // Add more values as needed from other pages
+        },
+        {
+            UserId: 'user1',
+            Timestamp:timestamp,
+            Section:'Currency growth',
+            Question1_1_baseMin: '15000',
+            Question1_1_baseMax: '95187',
+            Question1_1_min: document.getElementById('page2MinValue1-1').textContent,
+            Question1_1_max: document.getElementById('page2MaxValue1-1').textContent,
+            Question1_2: document.getElementById('page2SelectedValue1-2').textContent,
+            Question1_3_baseMin: '15000',
+            Question1_3_baseMax: '95187',
+            Question1_3_min:document.getElementById('page2MinValue1-3').textContent,
+            Question1_3_max:document.getElementById('page2MaxValue1-3').textContent,
+            Question1_4:pag3Question1_4,
+            Question1_5_baseMin:'15000',
+            Question1_5_baseMax:'95187',
+            Question1_5_min:document.getElementById('page2MinValue1-5').textContent,
+            Question1_5_max:document.getElementById('page2MaxValue1-5').textContent,
+            Question1_6:document.getElementById('page2SelectedValue1-6').textContent,
+            Question1_7_baseMin:'15000',
+            Question1_7_baseMax:'95187',
+            Question1_7_min:document.getElementById('page2MinValue1-7').textContent,
+            Question1_7_max:document.getElementById('page2MaxValue1-7').textContent
+            // Add more values as needed from other pages
+        },
+        {
+            UserId: 'user1',
+            Timestamp:timestamp,
+            Section:'Rate of return in the debt market',
+            Question1_1_baseMin: '12.00',
+            Question1_1_baseMax: '49.14',
+            Question1_1_min: document.getElementById('page4MinValue1-1').textContent,
+            Question1_1_max: document.getElementById('page4MaxValue1-1').textContent,
+            Question1_2: document.getElementById('page4SelectedValue1-2').textContent,
+            Question1_3_baseMin: '12.00',
+            Question1_3_baseMax: '49.14',
+            Question1_3_min:document.getElementById('page4MinValue1-3').textContent,
+            Question1_3_max:document.getElementById('page4MaxValue1-3').textContent,
+            Question1_4:pag4Question1_4,
+            Question1_5_baseMin:'12.00',
+            Question1_5_baseMax:'49.14',
+            Question1_5_min:document.getElementById('page4MinValue1-5').textContent,
+            Question1_5_max:document.getElementById('page4MaxValue1-5').textContent,
+            Question1_6:document.getElementById('page4SelectedValue1-6').textContent,
+            Question1_7_baseMin:'12.00',
+            Question1_7_baseMax:'49.14',
+            Question1_7_min:document.getElementById('page4MinValue1-7').textContent,
+            Question1_7_max:document.getElementById('page4MaxValue1-7').textContent
+            // Add more values as needed from other pages
+        },
+        {
+            UserId: 'user1',
+            Timestamp:timestamp,
+            Section:'Uncertainty index',
+            Question1_1_baseMin: '30.00',
+            Question1_1_baseMax: '140.00',
+            Question1_1_min: document.getElementById('page5MinValue1-1').textContent,
+            Question1_1_max: document.getElementById('page5MaxValue1-1').textContent,
+            Question1_2: document.getElementById('page5SelectedValue1-2').textContent,
+            Question1_3_baseMin: '30.00',
+            Question1_3_baseMax: '140.00',
+            Question1_3_min:document.getElementById('page5MinValue1-3').textContent,
+            Question1_3_max:document.getElementById('page5MaxValue1-3').textContent,
+            Question1_4:pag4Question1_4,
+            Question1_5_baseMin:'30.00',
+            Question1_5_baseMax:'140.00',
+            Question1_5_min:document.getElementById('page5MinValue1-5').textContent,
+            Question1_5_max:document.getElementById('page5MaxValue1-5').textContent,
+            Question1_6:document.getElementById('page5SelectedValue1-6').textContent,
+            Question1_7_baseMin:'30.00',
+            Question1_7_baseMax:'140.00',
+            Question1_7_min:document.getElementById('page5MinValue1-7').textContent,
+            Question1_7_max:document.getElementById('page5MaxValue1-7').textContent
+            // Add more values as needed from other pages
+        }                 
+    ];
+
+    // Send the data as a POST request to Google Sheets
+    fetch('https://script.google.com/macros/s/AKfycby-kfIuk7tLf9oiwLAPyxZqjb9-1K5z_hKHJsFMeHlpRQe8lYzWGU-BMFTn85dyCbFN/exec', {
+            method: 'POST',
+            mode: 'no-cors', // This prevents CORS issues
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataToSend)
+        }).then(response => response.text()).then(data => {
+            console.log('Success:', data);
+            alert('پاسخها با موفقیت ارسال شد!'); // Show success message
+            sendButton.style.backgroundColor = originalColor;    
+            sendButton.style.color = 'black';         
+            sendButton.innerText='ارسال پاسخها'                        
+        }).catch((error) => {
+            console.error('Error:', error);
+            alert('ارسال انجام نشد لطفا اینترنت خود را فعال  کرده و دوباره اقدام کنید.'); // Show error message
+            sendButton.style.backgroundColor = originalColor;            
+            sendButton.style.color = 'black';                     
+            sendButton.innerText='ارسال پاسخها'                                    
+        });
+    }
+    </script>
+</body>
+</html>
+please do the following refactors:
+1- I need to remove textcontent for the tags with Id like:
+page1MinValue1-1,page1MaxValue1-1,page1MinValue1-2,page1MaxValue1-2,...,page2MinValue1-1,page2MaxValue1-1,page2MinValue1-2,page2MaxValue1-2,...
+and set them by initial values in the beginning
+3- for the tags  like:
+                        <input  type="range" class="range-input" id="page1MinRange1-1" min="0.72" max="2.68" step="0.01" value="1" oninput="updateRangeValues('page1MinRange1-1', 'page1MaxRange1-1', 'page1MinValue1-1', 'page1MaxValue1-1', 'page1GreenLine1-1', 'page1MinValue1-2', 'page1MaxValue1-2','page1SelectedValue1-2')">
+                        <input  type="range" class="range-input" id="page1MaxRange1-1" min="0.72" max="2.68" step="0.01" value="2" oninput="updateRangeValues('page1MinRange1-1', 'page1MaxRange1-1', 'page1MinValue1-1', 'page1MaxValue1-1', 'page1GreenLine1-1', 'page1MinValue1-2', 'page1MaxValue1-2','page1SelectedValue1-2')">
+,....
+also set min, max,value like this:
+min=value of 'page1MinValue1-1' - value of 'page1MinValue1-1' *.4
+max=value of 'page1MaxValue1-1' - value of 'page1MaxValue1-1' *.4
+,.....
+please ignore reproduce the style section and unchanged parts
